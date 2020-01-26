@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { mysql as mysqlConfig } from '../config'
-import { createConnection } from 'mysql'
+import { createConnection } from 'mysql2'
 const router = new Router()
 
 /**
