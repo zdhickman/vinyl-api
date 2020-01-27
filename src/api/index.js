@@ -1,6 +1,8 @@
 import { Router } from 'express'
-import { mysql as mysqlConfig } from '../config'
+import { mysql as mysqlConfig, discogs } from '../config'
 import { createConnection } from 'mysql2'
+import request from 'request'
+
 const router = new Router()
 
 /**
@@ -49,5 +51,27 @@ router.route('/covers')
     connection.end()
   })
   .delete((_, __, next) => next(new Error('Not implemented')))
+
+router.route('/search')
+  .get((req, res) => {
+    const { q } = req.query
+    const options = {
+      url: `https://api.discogs.com/database/search?q=${q}&type=master&key=${discogs.key}&secret=${discogs.secret}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': discogs.userAgent
+      }
+    }
+
+    request(options, (error, response, body) => {
+      if (error || response.statusCode !== 200) {
+        console.error(error)
+        throw new Error()
+      }
+
+      const results = JSON.parse(body)
+      res.send(results)
+    })
+  })
 
 export default router

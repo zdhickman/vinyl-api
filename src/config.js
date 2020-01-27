@@ -28,10 +28,15 @@ const config = {
     apiRoot: process.env.API_ROOT || '',
     masterKey: requireProcessEnv('MASTER_KEY'),
     mysql: {
-      host: process.env.MYSQL_URI,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASS,
-      database: process.env.MYSQL_DB
+      host: requireProcessEnv('MYSQL_URI'),
+      user: requireProcessEnv('MYSQL_USER'),
+      password: requireProcessEnv('MYSQL_PASS'),
+      database: requireProcessEnv('MYSQL_DB')
+    },
+    discogs: {
+      key: requireProcessEnv('DISCOGS_KEY'),
+      secret: requireProcessEnv('DISCOGS_SECRET'),
+      userAgent: requireProcessEnv('DISCOGS_USER_AGENT')
     }
   },
   test: { },
